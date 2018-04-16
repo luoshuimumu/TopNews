@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <data class=".ItemGankDayBinding">
+
+        <variable
+            name="vm"
+            type="com.example.luoshuimumu.TopNews.gank.vm.BaseGankDayVM"
+            />
+    </data>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/item_margin_bottom"
+        android:layout_marginLeft="@dimen/item_margin_left"
+        android:layout_marginRight="@dimen/item_margin_right"
+        android:layout_marginTop="@dimen/item_margin_top"
+        android:background="@drawable/gank_day_title_img_selector"
+        android:onClick="@{(view)->vm.listenerContainer.dayItemListener.onClick(view,vm.day)}"
+        >
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@{vm.day}"/>
+
+    </RelativeLayout>
+</layout>

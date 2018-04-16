@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data class=".GankDayBinding">
+
+        <import type="android.view.View"/>
+
+        <variable
+            name="viewModel"
+            type="com.example.luoshuimumu.TopNews.gank.vm.GankDayViewModel"/>
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/fgm_gank_day_title_ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/item_padding_left"
+            android:paddingRight="@dimen/item_padding_right">
+            <!--android:onClick="@{(view)->viewModel.onTodayBtnClick(view)}"-->
+
+            <ImageView
+                android:id="@+id/fgm_gank_day_title_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@{viewModel.todayStr}"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:gravity="bottom"
+                android:text="@{viewModel.weatherStr}"/>
+        </LinearLayout>
+        <!--无数据视图-->
+        <FrameLayout
+            android:id="@+id/fgm_gank_day_title_fl_nodata"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/item_padding_bottom"
+            android:paddingTop="@dimen/item_padding_top"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/no_data"/>
+        </FrameLayout>
+        <!--gankday列表-->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/fgm_gank_day_title_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/fgm_gank_day_title_ll"
+            android:visibility="@{true==viewModel.showDaySelection?View.VISIBLE:View.GONE}"
+            app:adapter="@{viewModel.gankDayListAdapter}"
+            app:layoutManager="@{viewModel.layoutManager}"
+            >
+
+
+        </android.support.v7.widget.RecyclerView>
+    </RelativeLayout>
+</layout>

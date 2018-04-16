@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <data class=".ItemGankContentBinding">
+
+        <variable
+            name="vm"
+            type="com.example.luoshuimumu.TopNews.gank.vm.BaseGankItemVM"
+            />
+    </data>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:longClickable="true"
+        android:onClick="@{(view)->vm.listenerContainer.contentListener.onClick(view,vm.data)}"
+        android:onLongClick="@{(view)->vm.listenerContainer.longClickListener.onLongClick(view,vm.data)}"
+        android:paddingBottom="@dimen/item_padding_bottom"
+        android:paddingLeft="@dimen/item_padding_left"
+        android:paddingRight="@dimen/item_padding_right"
+        android:paddingTop="@dimen/item_padding_top"
+
+        >
+        <!--TODO  导致自动生成失败-->
+        <!--android:onLongClick="@{()->vm.listenerContainer.longClickListener.onClick(vm.data)}"-->
+
+        <LinearLayout
+            android:id="@+id/ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <!--  内容图片 这里可能会有多张图片,只显示第一章-->
+            <!--标题-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{vm.data.desc}"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:text="@{@string/binder_author(vm.data.who)}"
+                android:textSize="12sp"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:src="@{vm.data.type.equals(@string/welfare) ? vm.data.url : vm.data.images[1]}"
+                />
+        </LinearLayout>
+        <!--app:src="@{vm.data.url}"-->
+        <!--android:onClick="@{()->vm.clickListener.onClick(vm.data)}"-->
+
+        <!--日期 喜欢 分享-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ll"
+            android:layout_marginTop="30dp"
+            >
+
+            <!--TODO 需要处理时间-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                app:date="@{vm.data.publishedAt.toString()}"
+                />
+
+            <ImageView
+
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="60dp"
+                android:onClick="@{(view)->vm.listenerContainer.likeListener.onClick(view,vm.data)}"
+                android:scaleType="fitXY"
+                android:src="@mipmap/ic_launcher"/>
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="right"
+                android:layout_marginRight="20dp"
+                android:onClick="@{(view)->vm.listenerContainer.shareListener.onClick(view,vm.data)}"
+                android:scaleType="fitXY"
+                android:src="@mipmap/ic_launcher"/>
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+</layout>

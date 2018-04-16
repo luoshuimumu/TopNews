@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">My Application</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="welfare">福利</string>
+    <string name="no_data">暂无数据</string>
+
+
+    <string name="binder_author">文/%s</string>
+</resources>

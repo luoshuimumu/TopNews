@@ -1,0 +1,32 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data class=".GankBinding">
+
+        <variable
+            name="fgm"
+            type="com.example.luoshuimumu.TopNews.gank.view.GankListContentFgm"/>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+        <FrameLayout
+            android:id="@+id/aty_gank_fgm_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <!--fragment的绑定不使用databinding-->
+        <FrameLayout
+            android:id="@+id/aty_gank_fgm_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+</layout>

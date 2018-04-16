@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <data class=".AtyWebviewBinding"
+        >
+
+        <import type="android.view.View"/>
+
+        <variable
+            name="title"
+            type="String"/>
+
+        <variable
+            name="progress"
+            type="int"/>
+
+        <variable
+            name="returnListener"
+            type="android.view.View.OnClickListener"/>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/ic_launcher"
+                android:onClick="@{returnListener}"
+                android:scaleType="matrix"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@{title}"
+                android:textSize="15sp"/>
+
+        </RelativeLayout>
+
+        <ProgressBar
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:progress="@{progress}"
+            android:visibility="@{progress>=100?View.GONE:View.VISIBLE}"/>
+
+        <WebView
+            android:id="@+id/aty_webview_webview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ProgressBar
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:progress="50"/>
+
+        </WebView>
+
+    </LinearLayout>
+</layout>
