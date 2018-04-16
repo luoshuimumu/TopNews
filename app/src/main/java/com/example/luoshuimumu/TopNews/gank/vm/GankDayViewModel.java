@@ -39,11 +39,10 @@ public class GankDayViewModel extends BaseViewModel implements IGankDayViewModel
     //vm只持有关键数据
     //展示日期选择框
     public ObservableField<Boolean> showDaySelection = new ObservableField();
-
+    //adapter应该是可变的吗？
     public ObservableField<GankDayListAdapter> gankDayListAdapter = new ObservableField();
 
     public ObservableField<RecyclerView.LayoutManager> layoutManager = new ObservableField();
-
 
     //model就用于保存实体类
     private GankDayClickListenerContainer mDayClickListenerContainer
@@ -86,6 +85,10 @@ public class GankDayViewModel extends BaseViewModel implements IGankDayViewModel
                         //修改title显示的日期
                         decorateTodayStr(year, month, day);
                         //设置该项为选中
+                    }
+                    //通知外部点击事件
+                    if (null != mCallbak) {
+                        mCallbak.onUpdateListComplete(year, month, day);
                     }
                 }
         );

@@ -31,6 +31,7 @@ public class GankTitleFgm extends RxFragment implements GankDayViewModel.IGankDa
 
     @Override
     public void onUpdateListComplete(String year, String month, String day) {
+        //先改变自身控件的状态，如果点击的时候list是隐藏的，那么也应该隐藏
         //TODO 唤起另一个fragment（其中定义了接口）
         try {
             ((GankDayViewModel.IGankDayCallbak) getActivity()).onUpdateListComplete(year, month, day);
