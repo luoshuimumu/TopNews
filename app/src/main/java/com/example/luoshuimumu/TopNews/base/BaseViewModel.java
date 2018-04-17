@@ -7,7 +7,7 @@ import android.widget.Toast;
 import com.example.luoshuimumu.TopNews.net.retrofit.exception.ApiJsonParseErrorException;
 import com.example.luoshuimumu.TopNews.net.retrofit.exception.NoResponseDataException;
 import com.example.luoshuimumu.TopNews.utils.LogUtil;
-import com.trello.rxlifecycle2.components.RxFragment;
+import com.trello.rxlifecycle2.LifecycleProvider;
 
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
@@ -20,16 +20,18 @@ import io.reactivex.functions.Consumer;
 public class BaseViewModel {
     //可能需要持有的还有 fragment
     protected Context mContext;
-    protected RxFragment mFragment;
+    protected LifecycleProvider mLifecycleProvider;
     protected IView mView;
 
     public BaseViewModel(Context context) {
         this.mContext = context;
     }
 
-    public BaseViewModel(RxFragment fragment) {
-        this.mFragment = fragment;
-        this.mContext = fragment.getActivity();
+    public BaseViewModel(LifecycleProvider lifecycleProvider) {
+        this.mLifecycleProvider = lifecycleProvider;
+        if (lifecycleProvider instanceof Context) {
+            this.mContext = (Context) lifecycleProvider;
+        }
     }
 
     /**
@@ -93,7 +95,7 @@ public class BaseViewModel {
     public Observable requestWrap(Observable observable) {
         if (null != observable) {
             observable
-                    .compose(mFragment.bindToLifecycle())
+                    .compose(mLifecycleProvider.bindToLifecycle())
 //                    .compose(new ObservableTransformer() {
 //                        @Override
 //                        public ObservableSource apply(Observable upstream) {

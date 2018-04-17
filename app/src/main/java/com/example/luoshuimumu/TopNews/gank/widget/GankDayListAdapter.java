@@ -9,8 +9,9 @@ import android.view.ViewGroup;
 
 import com.example.luoshuimumu.TopNews.ItemGankDayBinding;
 import com.example.luoshuimumu.TopNews.R;
-import com.example.luoshuimumu.TopNews.gank.vm.BaseGankDayVM;
 import com.example.luoshuimumu.TopNews.gank.GankDayClickListenerContainer;
+import com.example.luoshuimumu.TopNews.gank.vm.BaseGankDayVM;
+import com.example.luoshuimumu.TopNews.widget.ListItemClickListenerMVVM;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,8 @@ public class GankDayListAdapter extends RecyclerView.Adapter<GankDayListAdapter.
 
     private GankDayClickListenerContainer mClickListenerContainer
             = new GankDayClickListenerContainer();
+
+    private ListItemClickListenerMVVM<String> mItemClickListenerMVVM;
 
     public GankDayListAdapter(Context context) {
         this.mContext = context;
@@ -61,9 +64,6 @@ public class GankDayListAdapter extends RecyclerView.Adapter<GankDayListAdapter.
         return null == data ? 0 : data.size();
     }
 
-    public void setClickListenerContainer(GankDayClickListenerContainer clickListenerContainer) {
-        mClickListenerContainer = clickListenerContainer;
-    }
 
     /**********             业务  item             *************/
     class DayHolder extends BaseGankHolder {
@@ -82,7 +82,14 @@ public class GankDayListAdapter extends RecyclerView.Adapter<GankDayListAdapter.
         }
     }
 
-    /**********           base  item             *************/
+    public ListItemClickListenerMVVM<String> getItemClickListenerMVVM() {
+        return mItemClickListenerMVVM;
+    }
+
+    public void setItemClickListenerMVVM(ListItemClickListenerMVVM<String> itemClickListenerMVVM) {
+        mItemClickListenerMVVM = itemClickListenerMVVM;
+    }
+/**********           base  item             *************/
     /**
      * 封装点击按钮，like按钮，转发按钮等
      */

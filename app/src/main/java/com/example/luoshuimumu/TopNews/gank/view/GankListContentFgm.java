@@ -1,6 +1,5 @@
 package com.example.luoshuimumu.TopNews.gank.view;
 
-import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
@@ -40,12 +39,6 @@ public class GankListContentFgm extends RxFragment implements GankDayViewModel.I
             fragment.setArguments(saveInstance);
         }
         return fragment;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        viewModel = new GankListViewModel(this);
     }
 
     @Override
@@ -106,6 +99,13 @@ public class GankListContentFgm extends RxFragment implements GankDayViewModel.I
 //            }
             return true;
         });
+    }
 
+    public GankListViewModel getViewModel() {
+        return viewModel;
+    }
+
+    public void setViewModel(GankListViewModel viewModel) {
+        this.viewModel = viewModel;
     }
 }

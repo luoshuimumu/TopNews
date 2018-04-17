@@ -6,4 +6,6 @@ package com.example.luoshuimumu.TopNews.gank.vm;
 
 public interface IGankDayViewModel {
     void getDayHistory();
+
+    void onDaySelected(String date);
 }

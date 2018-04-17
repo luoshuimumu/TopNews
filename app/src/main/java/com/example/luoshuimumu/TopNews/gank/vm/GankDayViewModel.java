@@ -1,8 +1,10 @@
 package com.example.luoshuimumu.TopNews.gank.vm;
 
+import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.example.luoshuimumu.TopNews.base.BaseViewModel;
@@ -32,6 +34,8 @@ public class GankDayViewModel extends BaseViewModel implements IGankDayViewModel
     GankStoreModel gankStoreModel;
     //当日日期
     public ObservableField<String> todayStr = new ObservableField();
+    //当日日期，用于显示的样式
+    public ObservableField<String> todaySpanStr = new ObservableField();
     //天气情况
     public ObservableField<String> weatherStr = new ObservableField();
 
@@ -39,11 +43,6 @@ public class GankDayViewModel extends BaseViewModel implements IGankDayViewModel
     //vm只持有关键数据
     //展示日期选择框
     public ObservableField<Boolean> showDaySelection = new ObservableField();
-
-    public ObservableField<GankDayListAdapter> gankDayListAdapter = new ObservableField();
-
-    public ObservableField<RecyclerView.LayoutManager> layoutManager = new ObservableField();
-
 
     //model就用于保存实体类
     private GankDayClickListenerContainer mDayClickListenerContainer
@@ -59,38 +58,42 @@ public class GankDayViewModel extends BaseViewModel implements IGankDayViewModel
         void onUpdateListComplete(String year, String month, String day);
     }
 
-    public GankDayViewModel(RxFragment fragment, IGankDayCallbak callback) {
+    public GankDayViewModel(RxFragment fragment) {
         super(fragment);
         topNewsApiHelper = new TopNewsApiHelper();
 
-        mCallbak = callback;
         //TODO 初始化mGankStoreModel
         gankStoreModel = new GankStoreModel(mContext);
-        //提前注册adaper
-        GankDayListAdapter gankDayListAdapter = new GankDayListAdapter(mContext);
-        this.gankDayListAdapter.set(gankDayListAdapter);
-        GridLayoutManager manager = new GridLayoutManager(mContext, 2, GridLayoutManager.VERTICAL, false);
-        layoutManager.set(manager);
-
-        //点击事件相关
-        setDayItemListener((view, date) -> {
-                    //解析这个日期
-                    String[] days = date.split("-");
-                    String year = "";
-                    String month = "";
-                    String day = "";
-                    if (null != days && days.length == 3) {
-                        year = days[0];
-                        month = days[1];
-                        day = days[2];
-                        //修改title显示的日期
-                        decorateTodayStr(year, month, day);
-                        //设置该项为选中
-                    }
-                }
-        );
+        initTodayStrCallback();
     }
 
+    private void initTodayStrCallback() {
+        todayStr.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable observable, int i) {
+                //修改title显示的当前日期
+                String date = todayStr.get();
+                if (TextUtils.isEmpty(date)) {
+                    return;
+                }
+
+                String[] days = date.split("-");
+                String year = "";
+                String month = "";
+                String day = "";
+                if (null != days && days.length == 3) {
+                    year = days[0];
+                    month = days[1];
+                    day = days[2];
+                    //修改title显示的日期
+                    decorateTodayStr(year, month, day);
+                    //设置该项为选中
+                }
+                //
+
+            }
+        });
+    }
 
     /**
      * 获取最新 idlist，对列表下拉刷新时调用
@@ -148,6 +151,11 @@ public class GankDayViewModel extends BaseViewModel implements IGankDayViewModel
         ;
     }
 
+    @Override
+    public void onDaySelected(String date) {
+
+    }
+
     public void setDayItemListener(ListItemClickListenerMVVM<String> listener) {
         mDayClickListenerContainer.setDayItemListener(listener);
         gankDayListAdapter.get().setClickListenerContainer(mDayClickListenerContainer);
@@ -174,7 +182,7 @@ public class GankDayViewModel extends BaseViewModel implements IGankDayViewModel
      * 为日期字符串添加样式
      */
     private void decorateTodayStr(String year, String month, String day) {
-        todayStr.set(year + "-" + month + "-" + day);
+        todaySpanStr.set(year + "-" + month + "-" + day);
     }
 
     /**
@@ -184,4 +192,11 @@ public class GankDayViewModel extends BaseViewModel implements IGankDayViewModel
         weatherStr.set("stub");
     }
 
+    public IGankDayCallbak getCallbak() {
+        return mCallbak;
+    }
+
+    public void setCallbak(IGankDayCallbak callbak) {
+        mCallbak = callbak;
+    }
 }

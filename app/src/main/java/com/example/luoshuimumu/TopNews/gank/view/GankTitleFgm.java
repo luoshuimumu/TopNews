@@ -1,9 +1,9 @@
 package com.example.luoshuimumu.TopNews.gank.view;
 
-import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import com.example.luoshuimumu.TopNews.GankDayBinding;
 import com.example.luoshuimumu.TopNews.R;
 import com.example.luoshuimumu.TopNews.gank.vm.GankDayViewModel;
+import com.example.luoshuimumu.TopNews.gank.widget.GankDayListAdapter;
 import com.example.luoshuimumu.TopNews.utils.LogUtil;
 import com.trello.rxlifecycle2.components.RxFragment;
 
@@ -23,10 +24,11 @@ import com.trello.rxlifecycle2.components.RxFragment;
 
 public class GankTitleFgm extends RxFragment implements GankDayViewModel.IGankDayCallbak {
 
-    GankDayViewModel viewModel;
+    private GankDayViewModel viewModel;
 
     private RecyclerView recyclerview;
     private ImageView ivTitle;
+    private View vTitle;
     private View vNodata;
 
     @Override
@@ -47,11 +49,6 @@ public class GankTitleFgm extends RxFragment implements GankDayViewModel.IGankDa
         return fragment;
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        viewModel = new GankDayViewModel(this, this);
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,7 +61,9 @@ public class GankTitleFgm extends RxFragment implements GankDayViewModel.IGankDa
         GankDayBinding binding = DataBindingUtil.inflate(inflater, R.layout.fgm_top_news_title_layout, container, false);
         binding.setViewModel(viewModel);
         View root = binding.getRoot();
-        initTitleClickListener(root);
+        initView(root);
+        initTitleClickListener();
+        initRecyclerview(binding.fgmGankDayTitleRecyclerview);
         return root;
     }
 
@@ -77,12 +76,8 @@ public class GankTitleFgm extends RxFragment implements GankDayViewModel.IGankDa
     /**
      * 页面控件的弹出、响应事件应该是由view控制的，否则要靠vm和xml完成这些逻辑，真的很复杂
      */
-    private void initTitleClickListener(View view) {
-        recyclerview = view.findViewById(R.id.fgm_gank_day_title_recyclerview);
-        vNodata = view.findViewById(R.id.fgm_gank_day_title_fl_nodata);
-        ivTitle = view.findViewById(R.id.fgm_gank_day_title_iv);
-
-        view.findViewById(R.id.fgm_gank_day_title_ll).setOnClickListener((clickView) -> {
+    private void initTitleClickListener() {
+        vTitle.setOnClickListener((clickView) -> {
             //TODO vNodata和recyclerview是互斥的显示状态
             //点击title会响应
             if (View.VISIBLE != recyclerview.getVisibility()
@@ -113,4 +108,30 @@ public class GankTitleFgm extends RxFragment implements GankDayViewModel.IGankDa
         });
     }
 
+    private void initRecyclerview(RecyclerView recyclerView) {
+        GankDayListAdapter gankDayListAdapter = new GankDayListAdapter(getActivity());
+        //设置点击事件，修改vm的 todayStr值
+        gankDayListAdapter.setItemClickListenerMVVM((view, dayStr) -> {
+            viewModel.on
+        });
+        GridLayoutManager manager = new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(manager);
+        recyclerView.setAdapter(gankDayListAdapter);
+    }
+
+    private void initView(View view) {
+        recyclerview = view.findViewById(R.id.fgm_gank_day_title_recyclerview);
+        vNodata = view.findViewById(R.id.fgm_gank_day_title_fl_nodata);
+        ivTitle = view.findViewById(R.id.fgm_gank_day_title_iv);
+        vTitle = view.findViewById(R.id.fgm_gank_day_title_ll);
+    }
+
+    public GankDayViewModel getViewModel() {
+        return viewModel;
+    }
+
+    public void setViewModel(GankDayViewModel viewModel) {
+        viewModel.setCallbak(this);
+        this.viewModel = viewModel;
+    }
 }
