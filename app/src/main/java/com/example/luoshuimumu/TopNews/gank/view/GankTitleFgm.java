@@ -111,9 +111,9 @@ public class GankTitleFgm extends RxFragment implements GankDayViewModel.IGankDa
 
     private void initRecyclerview(RecyclerView recyclerView) {
         GankDayListAdapter gankDayListAdapter = new GankDayListAdapter(getActivity());
-        //设置点击事件，修改vm的 todayStr值
+        //TODO 设置点击事件，修改vm的 todayStr值
         gankDayListAdapter.setItemClickListenerMVVM((view, dayStr) -> {
-            viewModel.on
+            viewModel.onDaySelected(dayStr);
         });
         GridLayoutManager manager = new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(manager);

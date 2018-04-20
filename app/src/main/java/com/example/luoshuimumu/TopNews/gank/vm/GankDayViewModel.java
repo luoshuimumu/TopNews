@@ -3,7 +3,6 @@ package com.example.luoshuimumu.TopNews.gank.vm;
 import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -22,6 +21,7 @@ import java.util.Map;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+import retrofit2.http.HEAD;
 
 
 /**
@@ -43,13 +43,6 @@ public class GankDayViewModel extends BaseViewModel implements IGankDayViewModel
     //vm只持有关键数据
     //展示日期选择框
     public ObservableField<Boolean> showDaySelection = new ObservableField();
-<<<<<<< HEAD
-=======
-    //adapter应该是可变的吗？
-    public ObservableField<GankDayListAdapter> gankDayListAdapter = new ObservableField();
-
-    public ObservableField<RecyclerView.LayoutManager> layoutManager = new ObservableField();
->>>>>>> f705bd743949fcb24291ce3aca3262d3e62c5839
 
     //model就用于保存实体类
     private GankDayClickListenerContainer mDayClickListenerContainer
@@ -71,37 +64,8 @@ public class GankDayViewModel extends BaseViewModel implements IGankDayViewModel
 
         //TODO 初始化mGankStoreModel
         gankStoreModel = new GankStoreModel(mContext);
-<<<<<<< HEAD
-        initTodayStrCallback();
-=======
-        //提前注册adaper
-        GankDayListAdapter gankDayListAdapter = new GankDayListAdapter(mContext);
-        this.gankDayListAdapter.set(gankDayListAdapter);
-        GridLayoutManager manager = new GridLayoutManager(mContext, 2, GridLayoutManager.VERTICAL, false);
-        layoutManager.set(manager);
 
-        //点击事件相关
-        setDayItemListener((view, date) -> {
-                    //解析这个日期
-                    String[] days = date.split("-");
-                    String year = "";
-                    String month = "";
-                    String day = "";
-                    if (null != days && days.length == 3) {
-                        year = days[0];
-                        month = days[1];
-                        day = days[2];
-                        //修改title显示的日期
-                        decorateTodayStr(year, month, day);
-                        //设置该项为选中
-                    }
-                    //通知外部点击事件
-                    if (null != mCallbak) {
-                        mCallbak.onUpdateListComplete(year, month, day);
-                    }
-                }
-        );
->>>>>>> f705bd743949fcb24291ce3aca3262d3e62c5839
+        initTodayStrCallback();
     }
 
     private void initTodayStrCallback() {
@@ -190,29 +154,8 @@ public class GankDayViewModel extends BaseViewModel implements IGankDayViewModel
 
     @Override
     public void onDaySelected(String date) {
-
-    }
-
-    public void setDayItemListener(ListItemClickListenerMVVM<String> listener) {
-        mDayClickListenerContainer.setDayItemListener(listener);
-        gankDayListAdapter.get().setClickListenerContainer(mDayClickListenerContainer);
-    }
-
-    /**
-     * 日期按钮点击事件，弹出日期选择框，点击后更新日期
-     */
-    public void onTodayBtnClick(View view) {
-        if (null != gankDayListAdapter.get()
-                && gankDayListAdapter.get().getItemCount() > 0) {
-            showDaySelection.set(true);
-        } else {
-            //展示无日期
-            showDaySelection.set(false);
-        }
-    }
-
-    private void initData() {
-        showDaySelection.set(false);
+        //请求
+        todayStr.set(date);
     }
 
     /**
