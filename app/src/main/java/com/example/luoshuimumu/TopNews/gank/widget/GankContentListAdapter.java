@@ -10,9 +10,11 @@ import android.view.ViewGroup;
 
 import com.example.luoshuimumu.TopNews.ItemGankContentBinding;
 import com.example.luoshuimumu.TopNews.R;
-import com.example.luoshuimumu.TopNews.gank.vm.BaseGankItemVM;
 import com.example.luoshuimumu.TopNews.gank.GankItemClickListenerContainer;
+import com.example.luoshuimumu.TopNews.gank.vm.BaseGankItemVM;
 import com.example.luoshuimumu.TopNews.gankio.entity.GankContent;
+import com.example.luoshuimumu.TopNews.widget.ListItemClickListenerMVVM;
+import com.example.luoshuimumu.TopNews.widget.ListItemLongClickListenerMVVM;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,14 +40,8 @@ public class GankContentListAdapter extends RecyclerView.Adapter<GankContentList
         this.mContext = context;
     }
 
-    public void appendData(List<GankContent> list) {
-        if (null == list || list.size() <= 0) {
-            return;
-        }
-        if (null == data) {
-            data = new ArrayList<>();
-        }
-        data.addAll(list);
+    public void setData(List<GankContent> data) {
+        this.data = data;
     }
 
     @Override
@@ -100,9 +96,23 @@ public class GankContentListAdapter extends RecyclerView.Adapter<GankContentList
         return null == data ? 0 : data.size();
     }
 
-    public void setClickListenerContainer(GankItemClickListenerContainer clickListenerContainer) {
-        mClickListenerContainer = clickListenerContainer;
+
+    public void setContentClickListener(ListItemClickListenerMVVM<GankContent> listener) {
+        mClickListenerContainer.setContentListener(listener);
     }
+
+    public void setLikeClickListener(ListItemClickListenerMVVM<GankContent> listener) {
+        mClickListenerContainer.setLikeListener(listener);
+    }
+
+    public void setShareClickListener(ListItemClickListenerMVVM<GankContent> listener) {
+        mClickListenerContainer.setShareListener(listener);
+    }
+
+    public void setLongClickClickListener(ListItemLongClickListenerMVVM<GankContent> listener) {
+        mClickListenerContainer.setLongClickListener(listener);
+    }
+
 
     /**********             业务  item             *************/
     class ContentHolder extends BaseGankHolder {

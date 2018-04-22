@@ -8,16 +8,14 @@ import android.widget.Toast;
 import com.example.luoshuimumu.TopNews.base.BaseViewModel;
 import com.example.luoshuimumu.TopNews.gank.GankItemClickListenerContainer;
 import com.example.luoshuimumu.TopNews.gank.model.GankStoreModel;
-import com.example.luoshuimumu.TopNews.gank.widget.GankContentListAdapter;
 import com.example.luoshuimumu.TopNews.gankio.entity.GankContent;
 import com.example.luoshuimumu.TopNews.gankio.entity.resp.GankDayResp;
 import com.example.luoshuimumu.TopNews.net.service.TopNewsApiHelper;
-import com.example.luoshuimumu.TopNews.widget.ListItemClickListenerMVVM;
-import com.example.luoshuimumu.TopNews.widget.ListItemLongClickListenerMVVM;
 import com.trello.rxlifecycle2.LifecycleProvider;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observer;
@@ -30,7 +28,6 @@ import io.reactivex.disposables.Disposable;
 
 public class GankListViewModel extends BaseViewModel implements IGankListViewModel, IGankDayViewModel {
 
-    public ObservableField<GankContentListAdapter> gnakContentListAdapter = new ObservableField();
     private GankItemClickListenerContainer mContentClickListenerContainer
             = new GankItemClickListenerContainer();
     TopNewsApiHelper topNewsApiHelper;
@@ -44,14 +41,13 @@ public class GankListViewModel extends BaseViewModel implements IGankListViewMod
     //天气情况
     public ObservableField<String> weatherStr = new ObservableField();
     //维护数据列表
-    public ObservableField<ArrayList<String>> gankdayList = new ObservableField();
+    public ObservableField<List<String>> gankDayList = new ObservableField();
+    public ObservableField<List<GankContent>> gankContentList = new ObservableField();
 
     public GankListViewModel(LifecycleProvider lifecycleProvider) {
         super(lifecycleProvider);
         topNewsApiHelper = new TopNewsApiHelper();
         //提前注册adaper
-        GankContentListAdapter gankContentListAdapter = new GankContentListAdapter(mContext);
-        gnakContentListAdapter.set(gankContentListAdapter);
         //TODO 初始化mGankStoreModel
         gankStoreModel = new GankStoreModel(mContext);
         initTodayStrCallback();
@@ -84,16 +80,7 @@ public class GankListViewModel extends BaseViewModel implements IGankListViewMod
                     public void onNext(GankDayResp resp) {
                         Toast.makeText(mContext, resp.toString(), Toast.LENGTH_SHORT).show();
                         //TODO 测试 添加福利数据
-//                        if (null == adapter.get()) {
-//                            GankContentListAdapter onelistAdapter = new GankContentListAdapter(mContext);
-//                            onelistAdapter.appendData(resp.getWelfare());
-//                            onelistAdapter.appendData(resp.getAndroid());
-//                            adapter.set(onelistAdapter);
-//                        } else {
-
-                        gnakContentListAdapter.get().appendData(resp.getData());
-//                        }
-                        gnakContentListAdapter.get().notifyDataSetChanged();
+                        gankContentList.set(resp.getData());
                     }
                 });
     }
@@ -128,22 +115,8 @@ public class GankListViewModel extends BaseViewModel implements IGankListViewMod
                         //TODO 根据id获取获取文章
                         //展示列表
                         if (null != gankDayListResp && gankDayListResp.size() > 0) {
-                            gankDayListAdapter.get().appendData(gankDayListResp);
-                            gankDayListAdapter.get().notifyDataSetChanged();
-                            //TODO 还应该触发其他vm的操作 考虑用EventBus
-                            String[] days = gankDayListResp.get(0).split("-");
-                            String year = "";
-                            String month = "";
-                            String day = "";
-                            if (null != days && days.length == 3) {
-                                year = days[0];
-                                month = days[1];
-                                day = days[2];
-                                decorateTodayStr(year, month, day);
-                            }
-                            if (null != mCallbak) {
-                                mCallbak.onUpdateListComplete(year, month, day);
-                            }
+                            gankDayList.set(gankDayListResp);
+                            onDaySelected(gankDayListResp.get(0));
                             //TODO 将数据存入数据库 没有的需要更新
                             //取下来一组列表 每次会删除旧表数据并更新表
                             gankStoreModel.storeGankDayHistory(gankDayListResp);
@@ -152,6 +125,17 @@ public class GankListViewModel extends BaseViewModel implements IGankListViewMod
                 });
 
         ;
+    }
+
+    @Override
+    public void onDaySelected(String date) {
+        //解析出当前日期并通知
+        todayStr.set(date);
+    }
+
+    @Override
+    public void onContentSelected(GankContent gankContent) {
+//do nothing
     }
 
     private void initTodayStrCallback() {
@@ -183,12 +167,15 @@ public class GankListViewModel extends BaseViewModel implements IGankListViewMod
     }
 
     private void initGankdayListStrCallback() {
-        gankdayList.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+        gankDayList.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable observable, int i) {
                 //TODO vm里写绑定的v的逻辑 没什么问题
                 //但是vm没有持有v的引用，
                 //demo的做法是xml的listview里绑定了item，为了
+                //获取v的adapter并通知v
+
+
             }
         });
     }
@@ -197,27 +184,8 @@ public class GankListViewModel extends BaseViewModel implements IGankListViewMod
      * 为日期字符串添加样式
      */
     private void decorateTodayStr(String year, String month, String day) {
-        todayStr.set(year + "-" + month + "-" + day);
+        todaySpanStr.set(year + "-" + month + "-" + day);
     }
 
-    public void setContentClickListener(ListItemClickListenerMVVM<GankContent> listener) {
-        mContentClickListenerContainer.setContentListener(listener);
-        gnakContentListAdapter.get().setClickListenerContainer(mContentClickListenerContainer);
-    }
-
-    public void setLikeClickListener(ListItemClickListenerMVVM<GankContent> listener) {
-        mContentClickListenerContainer.setLikeListener(listener);
-        gnakContentListAdapter.get().setClickListenerContainer(mContentClickListenerContainer);
-    }
-
-    public void setShareClickListener(ListItemClickListenerMVVM<GankContent> listener) {
-        mContentClickListenerContainer.setShareListener(listener);
-        gnakContentListAdapter.get().setClickListenerContainer(mContentClickListenerContainer);
-    }
-
-    public void setLongClickClickListener(ListItemLongClickListenerMVVM<GankContent> listener) {
-        mContentClickListenerContainer.setLongClickListener(listener);
-        gnakContentListAdapter.get().setClickListenerContainer(mContentClickListenerContainer);
-    }
 
 }

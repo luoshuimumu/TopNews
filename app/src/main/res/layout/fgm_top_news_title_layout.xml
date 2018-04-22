@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.luoshuimumu.TopNews.gank.vm.GankDayViewModel"/>
+            type="com.example.luoshuimumu.TopNews.gank.vm.GankListViewModel"/>
     </data>
 
     <RelativeLayout
@@ -20,7 +20,6 @@
             android:id="@+id/fgm_gank_day_title_ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:orientation="horizontal"
             android:paddingLeft="@dimen/item_padding_left"
             android:paddingRight="@dimen/item_padding_right">
@@ -65,13 +64,16 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/fgm_gank_day_title_recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/fgm_gank_day_title_ll"
-            android:visibility="@{true==viewModel.showDaySelection?View.VISIBLE:View.GONE}"
-            app:adapter="@{viewModel.gankDayListAdapter}"
-            app:layoutManager="@{viewModel.layoutManager}"
+            android:scrollbars="horizontal"
+            android:visibility="gone"
+            app:gankDayData="@{viewModel.gankDayList}"
             >
+            <!--android:visibility="@{true==viewModel.showDaySelection?View.VISIBLE:View.GONE}"-->
 
+            <!--app:adapter="@{viewModel.gankDayListAdapter}"-->
+            <!--app:layoutManager="@{viewModel.layoutManager}"-->
 
         </android.support.v7.widget.RecyclerView>
     </RelativeLayout>

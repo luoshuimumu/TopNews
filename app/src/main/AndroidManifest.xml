@@ -23,7 +23,6 @@
         </activity>
         <activity
             android:name=".gank.WebviewActivity"
-            android:exported="true"
             >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>

@@ -65,7 +65,7 @@ public class GankDataWriter {
             }
         }
         values.put("_id", gankContent.get_id());
-        values.put("_id", gankContent.get_id());
+        values.put("_id", gankContent.getDesc());
         values.put("_id", gankContent.get_id());
         values.put("_id", gankContent.get_id());
         values.put("_id", gankContent.get_id());

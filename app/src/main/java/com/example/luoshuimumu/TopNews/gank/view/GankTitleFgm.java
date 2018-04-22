@@ -12,9 +12,8 @@ import android.widget.ImageView;
 
 import com.example.luoshuimumu.TopNews.GankDayBinding;
 import com.example.luoshuimumu.TopNews.R;
-import com.example.luoshuimumu.TopNews.gank.vm.GankDayViewModel;
+import com.example.luoshuimumu.TopNews.gank.vm.GankListViewModel;
 import com.example.luoshuimumu.TopNews.gank.widget.GankDayListAdapter;
-import com.example.luoshuimumu.TopNews.utils.LogUtil;
 import com.trello.rxlifecycle2.components.RxFragment;
 
 /**
@@ -22,25 +21,15 @@ import com.trello.rxlifecycle2.components.RxFragment;
  * Created by luoshuimumu on 2017/11/13.
  */
 
-public class GankTitleFgm extends RxFragment implements GankDayViewModel.IGankDayCallbak {
+public class GankTitleFgm extends RxFragment {
 
-    private GankDayViewModel viewModel;
+    private GankListViewModel viewModel;
 
     private RecyclerView recyclerview;
     private ImageView ivTitle;
     private View vTitle;
     private View vNodata;
 
-    @Override
-    public void onUpdateListComplete(String year, String month, String day) {
-        //先改变自身控件的状态，如果点击的时候list是隐藏的，那么也应该隐藏
-        //TODO 唤起另一个fragment（其中定义了接口）
-        try {
-            ((GankDayViewModel.IGankDayCallbak) getActivity()).onUpdateListComplete(year, month, day);
-        } catch (ClassCastException e) {
-            LogUtil.e(GankTitleFgm.class.getSimpleName(), "getActivity cast to " + GankDayViewModel.IGankDayCallbak.class.getSimpleName() + " error");
-        }
-    }
 
     public static GankTitleFgm newInstance(Bundle saveInstance) {
         GankTitleFgm fragment = new GankTitleFgm();
@@ -114,7 +103,10 @@ public class GankTitleFgm extends RxFragment implements GankDayViewModel.IGankDa
         //TODO 设置点击事件，修改vm的 todayStr值
         gankDayListAdapter.setItemClickListenerMVVM((view, dayStr) -> {
             viewModel.onDaySelected(dayStr);
+            //使列表消失
+            recyclerView.setVisibility(View.GONE);
         });
+        gankDayListAdapter.setData(viewModel.gankDayList.get());
         GridLayoutManager manager = new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(gankDayListAdapter);
@@ -127,12 +119,11 @@ public class GankTitleFgm extends RxFragment implements GankDayViewModel.IGankDa
         vTitle = view.findViewById(R.id.fgm_gank_day_title_ll);
     }
 
-    public GankDayViewModel getViewModel() {
+    public GankListViewModel getViewModel() {
         return viewModel;
     }
 
-    public void setViewModel(GankDayViewModel viewModel) {
-        viewModel.setCallbak(this);
+    public void setViewModel(GankListViewModel viewModel) {
         this.viewModel = viewModel;
     }
 }

@@ -5,7 +5,6 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 
 import com.example.luoshuimumu.TopNews.R;
-import com.example.luoshuimumu.TopNews.gank.vm.GankDayViewModel;
 import com.example.luoshuimumu.TopNews.gank.vm.GankListViewModel;
 import com.example.luoshuimumu.TopNews.gank.vm.ViewModelHolder;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
@@ -14,7 +13,7 @@ import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
  * Created by luoshuimumu on 2017/11/13.
  */
 
-public class GankAty extends RxAppCompatActivity implements GankDayViewModel.IGankDayCallbak {
+public class GankAty extends RxAppCompatActivity {
     private static final String KEY_FGM_VM = "FGM_VM";
     //TODO 两个fragment可能要公用一个viewModel??但是只想共享数据，并不想共享contexd
     //viewModel放在 aty 层，多个fragment公用一个viewModel，有利于数据共享
@@ -28,11 +27,6 @@ public class GankAty extends RxAppCompatActivity implements GankDayViewModel.IGa
     FragmentManager fm;
 
     @Override
-    public void onUpdateListComplete(String year, String month, String day) {
-        fgmContent.onUpdateListComplete(year, month, day);
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.aty_top_news);
@@ -41,7 +35,7 @@ public class GankAty extends RxAppCompatActivity implements GankDayViewModel.IGa
         FragmentTransaction transaction = fm.beginTransaction();
         fgmTitle = GankTitleFgm.newInstance(savedInstanceState);
         fgmTitle.setViewModel(mViewModel);
-        transaction.add(R.id.aty_gank_fgm_title, fgmTitle);
+//        transaction.add(R.id.aty_gank_fgm_title, fgmTitle);
         fgmContent = GankListContentFgm.newInstance(savedInstanceState);
         fgmContent.setViewModel(mViewModel);
         transaction.add(R.id.aty_gank_fgm_content, fgmContent);

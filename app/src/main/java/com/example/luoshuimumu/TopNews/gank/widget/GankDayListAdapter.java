@@ -35,12 +35,10 @@ public class GankDayListAdapter extends RecyclerView.Adapter<GankDayListAdapter.
         this.mContext = context;
     }
 
-    public void appendData(List<String> list) {
-        if (null == list || list.size() <= 0) {
-            return;
-        }
-        data.addAll(list);
+    public void setData(List<String> data) {
+        this.data = data;
     }
+
 
     @Override
     public BaseGankHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -82,12 +80,14 @@ public class GankDayListAdapter extends RecyclerView.Adapter<GankDayListAdapter.
         }
     }
 
+
     public ListItemClickListenerMVVM<String> getItemClickListenerMVVM() {
         return mItemClickListenerMVVM;
     }
 
     public void setItemClickListenerMVVM(ListItemClickListenerMVVM<String> itemClickListenerMVVM) {
         mItemClickListenerMVVM = itemClickListenerMVVM;
+        mClickListenerContainer.setDayItemListener(mItemClickListenerMVVM);
     }
 /**********           base  item             *************/
     /**

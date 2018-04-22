@@ -5,6 +5,8 @@ import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +16,8 @@ import android.widget.Toast;
 import com.example.luoshuimumu.TopNews.GankListContentBinding;
 import com.example.luoshuimumu.TopNews.R;
 import com.example.luoshuimumu.TopNews.gank.WebviewActivity;
-import com.example.luoshuimumu.TopNews.gank.vm.GankDayViewModel;
 import com.example.luoshuimumu.TopNews.gank.vm.GankListViewModel;
+import com.example.luoshuimumu.TopNews.gank.widget.GankContentListAdapter;
 import com.trello.rxlifecycle2.components.RxFragment;
 
 /**
@@ -23,15 +25,10 @@ import com.trello.rxlifecycle2.components.RxFragment;
  * Created by luoshuimumu on 2017/11/13.
  */
 
-public class GankListContentFgm extends RxFragment implements GankDayViewModel.IGankDayCallbak {
+public class GankListContentFgm extends RxFragment {
     //业务交互vm
     GankListViewModel viewModel;
 
-
-    @Override
-    public void onUpdateListComplete(String year, String month, String day) {
-        viewModel.getDayContent(year, month, day);
-    }
 
     public static GankListContentFgm newInstance(Bundle saveInstance) {
         GankListContentFgm fragment = new GankListContentFgm();
@@ -51,6 +48,7 @@ public class GankListContentFgm extends RxFragment implements GankDayViewModel.I
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         GankListContentBinding binding = DataBindingUtil.inflate(inflater, R.layout.fgm_gank_list_content_layout, container, false);
         binding.setViewModel(viewModel);
+        initRecyclerview(binding.fgmGankListRecyclerview);
         return binding.getRoot();
     }
 
@@ -58,24 +56,35 @@ public class GankListContentFgm extends RxFragment implements GankDayViewModel.I
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-
-        initListItemClickListener();
+        viewModel.getDayHistory();
         //读取本地数据 异步加载网络数据
-
     }
 
+    private void initRecyclerview(RecyclerView recyclerView) {
+        GankContentListAdapter gankContentListAdapter = new GankContentListAdapter(getActivity());
+        initListItemClickListener(gankContentListAdapter);
+        //TODO 设置点击事件，修改vm的 todayStr值
+        gankContentListAdapter.setData(viewModel.gankContentList.get());
+//        LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+//        recyclerView.setLayoutManager(manager);
+        GridLayoutManager manager = new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(manager);
 
-    private void initListItemClickListener() {
+        recyclerView.setAdapter(gankContentListAdapter);
+    }
+
+    private void initListItemClickListener(GankContentListAdapter adapter) {
         //喜欢按钮
-        viewModel.setLikeClickListener((view, gankContent) -> {
+        adapter.setLikeClickListener((view, gankContent) -> {
             Toast.makeText(getActivity(), "点击喜欢:" + gankContent.getDesc(), Toast.LENGTH_SHORT).show();
         });
         //分享按钮
-        viewModel.setShareClickListener((view, gankContent) -> {
+        adapter.setShareClickListener((view, gankContent) -> {
             Toast.makeText(getActivity(), "点击分享:" + gankContent.getDesc(), Toast.LENGTH_SHORT).show();
         });
         //item点击
-        viewModel.setContentClickListener((view, gankContent) -> {
+        adapter.setContentClickListener((view, gankContent) -> {
+            viewModel.onContentSelected(gankContent);
             //短按直接从app的打开网页
             //TODO 跳转到webview
             if (!TextUtils.isEmpty(gankContent.getUrl())) {
@@ -83,11 +92,10 @@ public class GankListContentFgm extends RxFragment implements GankDayViewModel.I
                 Uri uri = Uri.parse(gankContent.getUrl());
                 intent.setData(uri);
                 startActivity(intent);
-//            Toast.makeText(getActivity(), "点击跳转到安卓文章详情:" + gankContent.getDesc(), Toast.LENGTH_SHORT).show();
             }
         });
         //长按气泡
-        viewModel.setLongClickClickListener((view, gankContent) -> {
+        adapter.setLongClickClickListener((view, gankContent) -> {
             //TODO 弹出选择框 允许选择外部浏览器打开
             Toast.makeText(getActivity(), "弹出气泡框选择外部浏览器打开安卓文章详情:" + gankContent.getDesc(), Toast.LENGTH_SHORT).show();
 
@@ -100,6 +108,7 @@ public class GankListContentFgm extends RxFragment implements GankDayViewModel.I
             return true;
         });
     }
+
 
     public GankListViewModel getViewModel() {
         return viewModel;

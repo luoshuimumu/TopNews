@@ -13,27 +13,22 @@
     </data>
 
     <LinearLayout
+        android:background="#6666aa"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
-
-        <Button
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="content_text_view"/>
-
+        <TextView
+            android:text="3213"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/fgm_gank_list_recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#e8e8e8"
-            app:adapter="@{viewModel.gnakContentListAdapter}"></android.support.v7.widget.RecyclerView>
+            android:layout_height="wrap_content"
+            android:background="#444444"
+            app:gankContentData="@{viewModel.gankContentList}"
+            ></android.support.v7.widget.RecyclerView>
 
     </LinearLayout>
 </layout>
