@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.ImageView;
 
 import com.example.luoshuimumu.TopNews.GankDayBinding;
@@ -22,13 +24,17 @@ import com.trello.rxlifecycle2.components.RxFragment;
  */
 
 public class GankTitleFgm extends RxFragment {
-
+    //data
     private GankListViewModel viewModel;
-
+    //widget
     private RecyclerView recyclerview;
     private ImageView ivTitle;
     private View vTitle;
     private View vNodata;
+
+    private AlphaAnimation mListShowAnim;
+    private AlphaAnimation mListHideAnim;
+    private long alphaAnimDuration = 500;
 
 
     public static GankTitleFgm newInstance(Bundle saveInstance) {
@@ -74,20 +80,23 @@ public class GankTitleFgm extends RxFragment {
                     && View.VISIBLE != vNodata.getVisibility()
                     ) {
                 //都不可见时，选一个显示
-
                 if (recyclerview.getAdapter().getItemCount() < 1) {
                     //list无数据
                     vNodata.setVisibility(View.VISIBLE);
+                    vNodata.startAnimation(mListShowAnim);
                 } else {
                     recyclerview.setVisibility(View.VISIBLE);
+                    recyclerview.startAnimation(mListShowAnim);
                 }
             } else {
                 //将可见的那个设置为消失
                 if (View.VISIBLE == vNodata.getVisibility()) {
                     vNodata.setVisibility(View.GONE);
+                    vNodata.startAnimation(mListHideAnim);
                 }
                 if (View.VISIBLE == recyclerview.getVisibility()) {
                     recyclerview.setVisibility(View.GONE);
+                    recyclerview.startAnimation(mListHideAnim);
                 }
             }
 
@@ -96,6 +105,74 @@ public class GankTitleFgm extends RxFragment {
                 ivTitle.setScaleY(-1);
             }
         });
+    }
+
+    /**
+     * 定义动画
+     */
+    private void initShowAlphaAnim() {
+        mListShowAnim = new AlphaAnimation(0.0f, 1.0f);
+        mListShowAnim.setDuration(alphaAnimDuration);
+        mListShowAnim.setFillAfter(true);//动画结束时停留在最后一帧
+    }
+
+    private void initHideAlphaAnim() {
+        mListHideAnim = new AlphaAnimation(1.0f, 0.0f);
+        mListHideAnim.setDuration(alphaAnimDuration);
+        mListHideAnim.setFillAfter(true);//动画结束时停留在最后一帧
+    }
+
+    private void startShowAlphaAnim(View view) {
+        if (null == view) {
+            return;
+        }
+        if (null == mListShowAnim) {
+            initShowAlphaAnim();
+        }
+        mListShowAnim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                view.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        view.startAnimation(mListShowAnim);
+    }
+
+    private void startHideAlphaAnim(View view) {
+        if (null == view) {
+            return;
+        }
+        if (null == mListHideAnim) {
+            initHideAlphaAnim();
+        }
+        mListHideAnim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                view.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        //TODO 动画会互相影响
+        view.startAnimation(mListHideAnim);
     }
 
     private void initRecyclerview(RecyclerView recyclerView) {
@@ -126,4 +203,6 @@ public class GankTitleFgm extends RxFragment {
     public void setViewModel(GankListViewModel viewModel) {
         this.viewModel = viewModel;
     }
+
+
 }

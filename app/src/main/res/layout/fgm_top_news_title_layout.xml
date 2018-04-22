@@ -19,24 +19,24 @@
         <LinearLayout
             android:id="@+id/fgm_gank_day_title_ll"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:orientation="horizontal"
+            android:gravity="bottom"
             android:paddingLeft="@dimen/item_padding_left"
             android:paddingRight="@dimen/item_padding_right">
             <!--android:onClick="@{(view)->viewModel.onTodayBtnClick(view)}"-->
-
-            <ImageView
-                android:id="@+id/fgm_gank_day_title_iv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@{viewModel.todayStr}"/>
+
+            <ImageView
+                android:id="@+id/fgm_gank_day_title_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
 
             <TextView
                 android:layout_width="wrap_content"
@@ -66,7 +66,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/fgm_gank_day_title_ll"
-            android:scrollbars="horizontal"
+            android:scrollbars="vertical"
             android:visibility="gone"
             app:gankDayData="@{viewModel.gankDayList}"
             >

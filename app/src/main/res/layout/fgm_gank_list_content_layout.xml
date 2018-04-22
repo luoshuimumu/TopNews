@@ -13,20 +13,14 @@
     </data>
 
     <LinearLayout
-        android:background="#6666aa"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <TextView
-            android:text="3213"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/fgm_gank_list_recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#444444"
+            android:layout_height="match_parent"
             app:gankContentData="@{viewModel.gankContentList}"
             ></android.support.v7.widget.RecyclerView>
 

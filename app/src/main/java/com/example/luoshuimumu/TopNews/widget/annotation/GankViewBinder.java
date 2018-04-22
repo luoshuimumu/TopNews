@@ -23,6 +23,7 @@ public class GankViewBinder {
         GankDayListAdapter adapter =
                 (GankDayListAdapter) recyclerView.getAdapter();
         adapter.setData(data);
+        adapter.notifyDataSetChanged();
     }
 
     @BindingAdapter(value = {"gankContentData"}, requireAll = false)
@@ -30,5 +31,6 @@ public class GankViewBinder {
         GankContentListAdapter adapter =
                 (GankContentListAdapter) recyclerView.getAdapter();
         adapter.setData(data);
+        adapter.notifyDataSetChanged();
     }
 }

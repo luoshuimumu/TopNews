@@ -35,7 +35,7 @@ public class GankAty extends RxAppCompatActivity {
         FragmentTransaction transaction = fm.beginTransaction();
         fgmTitle = GankTitleFgm.newInstance(savedInstanceState);
         fgmTitle.setViewModel(mViewModel);
-//        transaction.add(R.id.aty_gank_fgm_title, fgmTitle);
+        transaction.add(R.id.aty_gank_fgm_title, fgmTitle);
         fgmContent = GankListContentFgm.newInstance(savedInstanceState);
         fgmContent.setViewModel(mViewModel);
         transaction.add(R.id.aty_gank_fgm_content, fgmContent);
