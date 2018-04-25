@@ -83,20 +83,21 @@ public class GankTitleFgm extends RxFragment {
                 if (recyclerview.getAdapter().getItemCount() < 1) {
                     //list无数据
                     vNodata.setVisibility(View.VISIBLE);
+                    startShowAlphaAnim(vNodata);
                     vNodata.startAnimation(mListShowAnim);
                 } else {
                     recyclerview.setVisibility(View.VISIBLE);
-                    recyclerview.startAnimation(mListShowAnim);
+                    startShowAlphaAnim(recyclerview);
                 }
             } else {
                 //将可见的那个设置为消失
                 if (View.VISIBLE == vNodata.getVisibility()) {
                     vNodata.setVisibility(View.GONE);
-                    vNodata.startAnimation(mListHideAnim);
+                    startHideAlphaAnim(vNodata);
                 }
                 if (View.VISIBLE == recyclerview.getVisibility()) {
                     recyclerview.setVisibility(View.GONE);
-                    recyclerview.startAnimation(mListHideAnim);
+                    startHideAlphaAnim(recyclerview);
                 }
             }
 
@@ -145,6 +146,7 @@ public class GankTitleFgm extends RxFragment {
 
             }
         });
+        mListShowAnim.cancel();
         view.startAnimation(mListShowAnim);
     }
 
@@ -171,7 +173,7 @@ public class GankTitleFgm extends RxFragment {
 
             }
         });
-        //TODO 动画会互相影响
+        mListHideAnim.cancel();
         view.startAnimation(mListHideAnim);
     }
 

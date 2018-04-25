@@ -70,11 +70,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                app:date="@{vm.data.publishedAt.toString()}"
+                app:date="@{vm.data.publishedAt}"
                 />
 
             <ImageView
-
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_alignParentBottom="true"
@@ -82,7 +81,8 @@
                 android:layout_marginRight="60dp"
                 android:onClick="@{(view)->vm.listenerContainer.likeListener.onClick(view,vm.data)}"
                 android:scaleType="fitXY"
-                android:src="@mipmap/ic_launcher"/>
+                android:src="@{vm.data.like?@drawable/icon_like_click:@drawable/icon_like_unclick}"
+                />
 
             <ImageView
                 android:layout_width="20dp"
@@ -93,7 +93,7 @@
                 android:layout_marginRight="20dp"
                 android:onClick="@{(view)->vm.listenerContainer.shareListener.onClick(view,vm.data)}"
                 android:scaleType="fitXY"
-                android:src="@mipmap/ic_launcher"/>
+                android:src="@drawable/icon_share"/>
 
         </RelativeLayout>
 

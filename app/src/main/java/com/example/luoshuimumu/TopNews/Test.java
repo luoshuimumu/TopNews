@@ -11,6 +11,10 @@ import android.support.annotation.Nullable;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
+
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
 import io.reactivex.FlowableEmitter;
@@ -25,8 +29,8 @@ import io.reactivex.disposables.Disposable;
 
 public class Test {
 
-    private void getUriMatcher(){
-        UriMatcher matcher=new UriMatcher(UriMatcher.NO_MATCH);
+    private void getUriMatcher() {
+        UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
 //        matcher.addURI();
     }
 
@@ -142,5 +146,51 @@ public class Test {
         };
 
         flowable.subscribe(subscriber);
+    }
+
+
+    class MyRunable implements Runnable {
+        @Override
+        public void run() {
+            //do sometting
+//            Thread.currentThread().xxxx;
+        }
+    }
+
+    {
+        Thread myThread = new Thread(new MyRunable());
+        myThread.start();
+    }
+
+    class MyThread extends Thread {
+        @Override
+        public void run() {
+            super.run();
+        }
+    }
+
+    {
+        new MyThread().start();
+
+    }
+
+    class MyCallable implements Callable<String> {
+        @Override
+        public String call() throws Exception {
+            return null;
+        }
+    }
+
+    {
+        //让线程运行
+        FutureTask<String> task = new FutureTask<String>(new MyCallable());
+        Thread thread = new Thread(task);
+        thread.start();
+        //获取结果
+        try {
+            String result = task.get();
+        } catch (ExecutionException | InterruptedException e) {
+
+        }
     }
 }

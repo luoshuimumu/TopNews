@@ -23,6 +23,8 @@ public class GankContent extends BaseObservable {
     private boolean used;
     private String who;
 
+    private boolean isLike;
+
     public String get_id() {
         return _id;
     }
@@ -103,5 +105,13 @@ public class GankContent extends BaseObservable {
 
     public void setWho(String who) {
         this.who = who;
+    }
+
+    public boolean isLike() {
+        return isLike;
+    }
+
+    public void setLike(boolean like) {
+        isLike = like;
     }
 }
