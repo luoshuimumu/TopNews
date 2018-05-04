@@ -44,6 +44,10 @@ public class GankListViewModel extends BaseViewModel implements IGankListViewMod
     public ObservableField<List<String>> gankDayList = new ObservableField();
     public ObservableField<List<GankContent>> gankContentList = new ObservableField();
 
+    //帮顶接口加载进度
+    public ObservableField<LoadingViewContainer> titleLoadContainer = new ObservableField();
+
+
     public GankListViewModel(LifecycleProvider lifecycleProvider) {
         super(lifecycleProvider);
         topNewsApiHelper = new TopNewsApiHelper();

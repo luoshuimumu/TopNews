@@ -66,6 +66,8 @@ public class GankTitleFgm extends RxFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        //请求网络前加载等待页面
+        //请求结束后vm如何通知v？在vm里加标记,那这样vm里的每个请求都要加标记？
         viewModel.getDayHistory();
     }
 

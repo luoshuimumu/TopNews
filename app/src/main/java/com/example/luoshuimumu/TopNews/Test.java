@@ -29,6 +29,10 @@ import io.reactivex.disposables.Disposable;
 
 public class Test {
 
+    //1.synchronized
+    //1.1
+
+
     private void getUriMatcher() {
         UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
 //        matcher.addURI();

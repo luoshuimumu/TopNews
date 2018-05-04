@@ -7,4 +7,5 @@
 
 
     <string name="binder_author">文/%s</string>
+    <string name="binder_today">今天是%s</string>
 </resources>

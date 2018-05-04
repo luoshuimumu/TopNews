@@ -26,10 +26,21 @@ public class GankAty extends RxAppCompatActivity {
     //fgm管理器，开启事务后才能用
     FragmentManager fm;
 
+    /**
+     * 取到当前日期，加载等待图片
+     * 加载最近日期，contentFgm显示等待
+     * 加载到最近日期，contentFgm显示加载
+     * 加载完成显示页面
+     * 点击切换时延迟读取，
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.aty_top_news);
+        //先展示广告页
+        showAdsView();
         mViewModel = initViewModel();//从fragment初始化viewModel
         fm = getFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
@@ -41,6 +52,15 @@ public class GankAty extends RxAppCompatActivity {
         transaction.add(R.id.aty_gank_fgm_content, fgmContent);
         transaction.commit();
     }
+
+    /**
+     * 显示大的页面
+     */
+    private void showAdsView() {
+        AdsFragment adsFragment = new AdsFragment();
+        adsFragment.show(getSupportFragmentManager(), AdsFragment.class.getSimpleName());
+    }
+
 
     private GankListViewModel initViewModel() {
         ViewModelHolder<GankListViewModel> container
