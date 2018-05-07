@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools">
+        xmlns:tools="http://schemas.android.com/tools"
+    >
 
     <data class=".GankDayBinding">
 
@@ -47,8 +48,9 @@
         </LinearLayout>
         <!--loading视图-->
         <include
-            app:status="@{viewModel.titleLoadContainer}"
+            android:id="@+id/lodingview"
             layout="@layout/loading_view"
+            app:status="@{viewModel.titleLoadContainer}"
             ></include>
         <!--无数据视图-->
         <FrameLayout

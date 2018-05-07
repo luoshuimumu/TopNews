@@ -18,7 +18,7 @@ import io.reactivex.Observable;
  */
 
 public class LoadingViewBinder {
-    @BindingAdapter(value = {"status"}, requireAll = false)
+    @BindingAdapter(value = {"loading_status"}, requireAll = false)
     public static void bindLoadingStatus(View view, Integer status) {
         if (null == status) {
             return;
