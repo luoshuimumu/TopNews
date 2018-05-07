@@ -20,8 +20,8 @@
             android:id="@+id/fgm_gank_day_title_ll"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:orientation="horizontal"
             android:gravity="bottom"
+            android:orientation="horizontal"
             android:paddingLeft="@dimen/item_padding_left"
             android:paddingRight="@dimen/item_padding_right">
             <!--android:onClick="@{(view)->viewModel.onTodayBtnClick(view)}"-->
@@ -45,6 +45,11 @@
                 android:gravity="bottom"
                 android:text="@{viewModel.weatherStr}"/>
         </LinearLayout>
+        <!--loading视图-->
+        <include
+            app:status="@{viewModel.titleLoadContainer}"
+            layout="@layout/loading_view"
+            ></include>
         <!--无数据视图-->
         <FrameLayout
             android:id="@+id/fgm_gank_day_title_fl_nodata"

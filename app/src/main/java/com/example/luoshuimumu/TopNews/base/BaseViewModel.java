@@ -21,11 +21,7 @@ public class BaseViewModel {
     //可能需要持有的还有 fragment
     protected Context mContext;
     protected LifecycleProvider mLifecycleProvider;
-    protected IView mView;
-
-    public BaseViewModel(Context context) {
-        this.mContext = context;
-    }
+//    protected IView mView;这是mvp的写法，不应该出现在这里
 
     public BaseViewModel(LifecycleProvider lifecycleProvider) {
         this.mLifecycleProvider = lifecycleProvider;

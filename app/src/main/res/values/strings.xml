@@ -8,4 +8,9 @@
 
     <string name="binder_author">文/%s</string>
     <string name="binder_today">今天是%s</string>
+
+    <!--loadingview-->
+    <string name="loading_view_loading">加载中</string>
+    <string name="loading_view_success">加载成功</string>
+    <string name="loading_view_fail">加载失败</string>
 </resources>

@@ -5,7 +5,7 @@ import android.databinding.ObservableField;
 import android.text.TextUtils;
 import android.widget.Toast;
 
-import com.example.luoshuimumu.TopNews.base.BaseViewModel;
+import com.example.luoshuimumu.TopNews.base.BaseNetViewModel;
 import com.example.luoshuimumu.TopNews.gank.GankItemClickListenerContainer;
 import com.example.luoshuimumu.TopNews.gank.model.GankStoreModel;
 import com.example.luoshuimumu.TopNews.gankio.entity.GankContent;
@@ -26,7 +26,7 @@ import io.reactivex.disposables.Disposable;
  * Created by luoshuimumu on 2017/11/9.
  */
 
-public class GankListViewModel extends BaseViewModel implements IGankListViewModel, IGankDayViewModel {
+public class GankListViewModel extends BaseNetViewModel implements IGankListViewModel, IGankDayViewModel {
 
     private GankItemClickListenerContainer mContentClickListenerContainer
             = new GankItemClickListenerContainer();
@@ -44,8 +44,9 @@ public class GankListViewModel extends BaseViewModel implements IGankListViewMod
     public ObservableField<List<String>> gankDayList = new ObservableField();
     public ObservableField<List<GankContent>> gankContentList = new ObservableField();
 
-    //帮顶接口加载进度
+    //绑定接口加载进度
     public ObservableField<LoadingViewContainer> titleLoadContainer = new ObservableField();
+    public ObservableField<LoadingViewContainer> contentLoadContainer = new ObservableField();
 
 
     public GankListViewModel(LifecycleProvider lifecycleProvider) {
@@ -56,6 +57,7 @@ public class GankListViewModel extends BaseViewModel implements IGankListViewMod
         gankStoreModel = new GankStoreModel(mContext);
         initTodayStrCallback();
         initGankdayListStrCallback();
+        contentLoadContainer.set(new LoadingViewContainer());
     }
 
     /**
@@ -63,6 +65,7 @@ public class GankListViewModel extends BaseViewModel implements IGankListViewMod
      */
     @Override
     public void getDayContent(String year, String month, String day) {
+        setNetStatusLoading(contentLoadContainer);
         requestWrap(topNewsApiHelper.getOneList(year, month, day))
                 .subscribe(new Observer<GankDayResp>() {
                     @Override
@@ -77,11 +80,13 @@ public class GankListViewModel extends BaseViewModel implements IGankListViewMod
 
                     @Override
                     public void onError(Throwable e) {
+                        setNetStatusFail(contentLoadContainer);
                         handleError(e);
                     }
 
                     @Override
                     public void onNext(GankDayResp resp) {
+                        setNetStatusSuccess(contentLoadContainer);
                         Toast.makeText(mContext, resp.toString(), Toast.LENGTH_SHORT).show();
                         //TODO 测试 添加福利数据
                         gankContentList.set(resp.getData());
@@ -94,6 +99,7 @@ public class GankListViewModel extends BaseViewModel implements IGankListViewMod
      */
     @Override
     public void getDayHistory() {
+        setNetStatusLoading(titleLoadContainer);
         Map<String, String> params = new HashMap<>();
         requestWrap(topNewsApiHelper.getIdList(params))
                 .subscribe(new Observer<ArrayList<String>>() {
@@ -109,6 +115,7 @@ public class GankListViewModel extends BaseViewModel implements IGankListViewMod
 
                     @Override
                     public void onError(Throwable e) {
+                        setNetStatusFail(titleLoadContainer);
                         //TODO 通用的错误处理封装在baseVM层
                         handleError(e);
                         //TODO 触发本地读取操作
@@ -116,6 +123,7 @@ public class GankListViewModel extends BaseViewModel implements IGankListViewMod
 
                     @Override
                     public void onNext(ArrayList<String> gankDayListResp) {
+                        setNetStatusSuccess(titleLoadContainer);
                         //TODO 根据id获取获取文章
                         //展示列表
                         if (null != gankDayListResp && gankDayListResp.size() > 0) {
