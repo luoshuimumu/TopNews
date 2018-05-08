@@ -4,6 +4,7 @@ import android.databinding.BindingAdapter;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.luoshuimumu.TopNews.R;
@@ -19,7 +20,7 @@ import io.reactivex.Observable;
 
 public class LoadingViewBinder {
     @BindingAdapter(value = {"loading_status"}, requireAll = false)
-    public static void bindLoadingStatus(View view, Integer status) {
+    public static void bindLoadingStatus(RelativeLayout view, Integer status) {
         if (null == status) {
             return;
         }

@@ -57,7 +57,9 @@ public class GankListViewModel extends BaseNetViewModel implements IGankListView
         gankStoreModel = new GankStoreModel(mContext);
         initTodayStrCallback();
         initGankdayListStrCallback();
+        //要手动初始化，否则设置不起作用
         contentLoadContainer.set(new LoadingViewContainer());
+        titleLoadContainer.set(new LoadingViewContainer());
     }
 
     /**
@@ -172,7 +174,6 @@ public class GankListViewModel extends BaseNetViewModel implements IGankListView
                     decorateTodayStr(year, month, day);
                     //设置该项为选中
                 }
-                //
                 getDayContent(year, month, day);
             }
         });

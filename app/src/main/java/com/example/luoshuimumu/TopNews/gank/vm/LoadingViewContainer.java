@@ -12,4 +12,20 @@ public class LoadingViewContainer {
     public static final int STATUS_LOAD_SUCCESS = 3;
     public ObservableField<Integer> loadStatusCode = new ObservableField<>();
     public ObservableField<String> loadStatusMsg = new ObservableField<>();
+
+    public ObservableField<Integer> getLoadStatusCode() {
+        return loadStatusCode;
+    }
+
+    public void setLoadStatusCode(ObservableField<Integer> loadStatusCode) {
+        this.loadStatusCode = loadStatusCode;
+    }
+
+    public ObservableField<String> getLoadStatusMsg() {
+        return loadStatusMsg;
+    }
+
+    public void setLoadStatusMsg(ObservableField<String> loadStatusMsg) {
+        this.loadStatusMsg = loadStatusMsg;
+    }
 }

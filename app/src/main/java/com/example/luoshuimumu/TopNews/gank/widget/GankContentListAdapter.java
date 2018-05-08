@@ -127,6 +127,7 @@ public class GankContentListAdapter extends RecyclerView.Adapter<GankContentList
         public void bind(BaseGankItemVM vm) {
             if (null != mBinding) {
                 mBinding.setVm(vm);
+                mBinding.executePendingBindings();
             }
         }
     }
